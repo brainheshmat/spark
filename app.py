@@ -15,17 +15,18 @@ from flask import Flask, request
 @main.route("/getData/<int:col>/<int:id>", methods=["GET"])
 def getDataPCMD(col,id):
     logger.debug("Getting data")
+    filepath = "/data/*.geo"
     result = data_engine.get_data(col,id)
-    result.persist() #.cache()
+    #result.persist() #.cache()
     res = result.collect()
     #print res
     return json.dumps(res)
 
 def create_app(spark_context, dataset_path):
-	global data_engine 
+    global data_engine 
 
-	data_engine = DataRDD(spark_context, dataset_path)    
+    data_engine = DataRDD(spark_context, dataset_path)    
 
-	app = Flask(__name__)
-	app.register_blueprint(main)
-	return app 
+    app = Flask(__name__)
+    app.register_blueprint(main)
+    return app 

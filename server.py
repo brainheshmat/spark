@@ -6,6 +6,8 @@ from pyspark import SparkContext, SparkConf
 def init_spark_context():
     # load spark context
     conf = SparkConf().setAppName("ctr-server")
+    conf.set('spark.kryoserializer.buffer', '512mb')
+    conf.set('spark.kryoserializer.buffer.max', '512')
     # IMPORTANT: pass aditional Python modules to each worker
     sc = SparkContext(conf=conf, pyFiles=['/home/ec2-user/engine.py', '/home/ec2-user/app.py'])
  
@@ -36,9 +38,9 @@ def run_server(app):
 if __name__ == "__main__":
     # Init spark context and load libraries
     sc = init_spark_context()
-    hdfs_dataset_path = "hdfs://ip-172-31-41-216.ec2.internal:9000/data/2015-07-07.14*.-0800.MMEpcmd.geo"#"file:///tmp/mme1/2015-07-07.14.*.-0800.MMEpcmd.geo"#os.path.join('datasets', 'ml-latest')
-    local_dataset_path = "file:///tmp/mme1/2015-07-07.14.59.-0800.MMEpcmd.geo"
-    app = create_app(sc, local_dataset_path)
+    hdfs_dataset_path = "hdfs://ip-172-31-41-216.ec2.internal:9000/data/output1.file"#".2015-07-07.14*.-0800.MMEpcmd.geo"#"file:///tmp/mme1/2015-07-07.14.*.-0800.MMEpcmd.geo"#os.path.join('datasets', 'ml-latest')
+    local_dataset_path = "file:///data/output1.file"#"file://tmp/mme1/2015-07-07.14.59.-0800.MMEpcmd.geo"
+    app = create_app(sc, hdfs_dataset_path)
 
     # start web server
     run_server(app)
