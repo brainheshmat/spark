@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 class DataRDD:
 
-	def get_data(self, col,id):
+	def get_data(self):
 		# rdd_array = []
 		# for fn in glob.glob(file_path):
 		# 	if os.path.isfile(fn):
@@ -20,7 +20,7 @@ class DataRDD:
 		# #self.data = self.sc.textFile("file://"+file_path)# self.sc.union([self.sc.textFile("file://"+f) for f in file_path])
 		# self.data =  self.sc.union(rdd_array);
 
-		result = self.data.filter(lambda line: (line.split(';')[col]==str(id)))
+		result = self.data.map(lambda line: (line.split(';')[8]))#==str("292")))#.filter(lambda line: (line.split(';')[col]==str(id)))
 		#print result.collect()
 		#result.cache()
 		return result
@@ -31,10 +31,13 @@ class DataRDD:
 		logger.info("Starting up the data engine: "+dataset_path)
 		file_path = dataset_path #os.path.join(dataset_path)
 		self.sc = sc
-		raw_RDD = sc.textFile(file_path).repartition(33);
+		raw_RDD = sc.textFile(file_path);
 		# for fn in os.listdir(file_path):
 		# 	if os.path.isfile(fn):
 		#         #print (fn)
 		# 		self.data = self.sc.textFile(','.join("file:///"+fn))#sc.textFile(file_path)
 				
 		self.data = raw_RDD
+		#self.data.filter(lambda line: (line.split(';')[9]==str('292')))
+		#self.data.collect()
+		#self.data.cache()
