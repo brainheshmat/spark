@@ -20,7 +20,7 @@ class DataRDD:
 		# #self.data = self.sc.textFile("file://"+file_path)# self.sc.union([self.sc.textFile("file://"+f) for f in file_path])
 		# self.data =  self.sc.union(rdd_array);
 
-		result = self.data.map(lambda line: (line.split(';')[8]))#==str("292")))#.filter(lambda line: (line.split(';')[col]==str(id)))
+		result = self.data.map(lambda line:(line.split(';')[:10]))#.map(lambda line: (line.split(';')[1],line.split(';')[2],line.split(';')[8]))#==str("292")))#.filter(lambda line: (line.split(';')[col]==str(id)))
 		#print result.collect()
 		#result.cache()
 		return result

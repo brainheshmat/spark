@@ -12,10 +12,11 @@ logger = logging.getLogger(__name__)
  
 from flask import Flask, request
 
-@main.route("/getData/<int:col>/<int:id>", methods=["GET"])
-def getData(col,id):
+@main.route("/getData/<int:col>/<int:id>/<int:o>/", methods=["GET"])
+def getData(col,id,o):
     logger.debug("filtering")
-    res = data.filter(lambda line: (line.split(';')[col]==str(id)))
+    print col,id,o
+    res = data.filter(lambda line: (line[col]==str(id))).map(lambda line: (line[o]))
     #print res
     return json.dumps(res.collect())
 
